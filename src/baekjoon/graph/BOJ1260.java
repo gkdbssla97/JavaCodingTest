@@ -3,69 +3,68 @@ package baekjoon.graph;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 import static java.util.List.*;
 
 public class BOJ1260 {
+    static int node;
+    static int vertex;
+    static int start;
+    static int[][] board;
     static boolean[] visited;
-    static int[][] vertex;
-    static int node, testCase, start;
-    static String result;
+    static String line;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] s = br.readLine().split(" ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        node = Integer.parseInt(s[0]);
-        testCase = Integer.parseInt(s[1]);
-        start = Integer.parseInt(s[2]);
+        node = Integer.parseInt(st.nextToken());
+        vertex = Integer.parseInt(st.nextToken());
+        start = Integer.parseInt(st.nextToken());
 
-        vertex = new int[node + 1][node + 1];
+        board = new int[node + 1][node + 1];
         visited = new boolean[node + 1];
 
-        for (int i = 0; i < testCase; i++) {
-            String[] input = br.readLine().split(" ");
-            int a = Integer.parseInt(input[0]);
-            int b = Integer.parseInt(input[1]);
-            vertex[a][b] = vertex[b][a] = 1;
+        for (int i = 0; i < vertex; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            board[a][b] = 1;
+            board[b][a] = 1;
         }
-
-        result = "";
+        line = "";
         dfs(start);
-        System.out.println(result);
-        visited = new boolean[node + 1];
-        result = "";
-        bfs(start);
-        System.out.println(result);
-    }
+        System.out.println(line);
 
-    public static void dfs(int start) {
-        visited[start] = true;
-        result += start + " ";
+        line = "";
+        visited = new boolean[node + 1];
+        bfs(start);
+        System.out.println(line);
+    }
+    static void dfs(int n) {
+        visited[n] = true;
+        line += n + " ";
         for (int i = 1; i <= node; i++) {
-            if (vertex[start][i] == 1 && !visited[i]) {
+            if (!visited[i] && board[n][i] == 1) {
+                visited[i] = true;
                 dfs(i);
             }
         }
     }
-
-    public static void bfs(int start) {
-        Queue<Integer> queue = new LinkedList<Integer>();
-        queue.offer(start);
-        visited[start] = true;
-
+    static void bfs(int n) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(n);
         while (!queue.isEmpty()) {
             Integer poll = queue.poll();
-            result += poll + " ";
-            for (int j = 1; j <= node; j++) {
-                if (!visited[j] && vertex[poll][j] == 1) {
-                    queue.offer(j);
-                    visited[j] = true;
+            line += poll + " ";
+            visited[poll] = true;
+            for (int i = 1; i <= node; i++) {
+                if (!visited[i] && board[poll][i] == 1) {
+                    visited[i] = true;
+                    queue.offer(i);
                 }
             }
         }
     }
+
 }
