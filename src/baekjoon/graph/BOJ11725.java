@@ -3,52 +3,48 @@ package baekjoon.graph;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class BOJ11725 {
-    static ArrayList<ArrayList<Integer>> arr;
-    static int[] visited;
-    static int[] res;
     static int N;
-
-    static void bfs() {
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        visited[1] = 1;
-        while (!q.isEmpty()) {
-            Integer poll = q.poll();
-            for (Integer i : arr.get(poll)) {
-                if (visited[i] == 0) {
-                    visited[i] = 1;
-                    res[i] = poll;
-                    q.offer(i);
-                }
-            }
-        }
-    }
-
+    static ArrayList<ArrayList<Integer>> board;
+    static boolean[] visited;
+    static Integer[] list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        arr = new ArrayList<>();
-        visited = new int[N + 1];
-        res = new int[N + 1];
-
+        N = Integer.parseInt(br.readLine());
+        board = new ArrayList<>(N + 1);
+        visited = new boolean[N + 1];
         for (int i = 0; i <= N; i++) {
-            arr.add(new ArrayList<>());
+            board.add(new ArrayList<>());
         }
         for (int i = 0; i < N - 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            arr.get(a).add(b);
-            arr.get(b).add(a);
+            List<Integer> collect = Arrays.stream(br.readLine().split(" "))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            board.get(collect.get(0)).add(collect.get(1));
+            board.get(collect.get(1)).add(collect.get(0));
         }
-        bfs();
-        for (int i = 2; i < res.length; i++) {
-            System.out.println(res[i]);
+        list = new Integer[N + 1];
+        bfs(1);
+        for (int i = 2; i <= N; i++) {
+            System.out.println(list[i]);
+        }
+    }
+    static void bfs(int i) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(i);
+        while (!q.isEmpty()) {
+            Integer poll = q.poll();
+            for (Integer num : board.get(poll)) {
+                if (!visited[num]) {
+                    visited[num] = true;
+                    list[num] = poll;
+                    q.offer(num);
+                }
+            }
         }
     }
 }
