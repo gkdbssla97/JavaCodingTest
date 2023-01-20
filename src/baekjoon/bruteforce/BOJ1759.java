@@ -36,10 +36,7 @@ public class BOJ1759 {
         res.sort(new Comparator<ArrayList<String>>() {
             @Override
             public int compare(ArrayList<String> o1, ArrayList<String> o2) {
-                if (o1.toString().compareTo(o2.toString()) < 0)
-                    return -1;
-                else
-                    return 1;
+                return o1.toString().compareTo(o2.toString());
             }
         });
         for (ArrayList<String> s : res) {
