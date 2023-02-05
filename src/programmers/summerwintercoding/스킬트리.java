@@ -19,7 +19,6 @@ public class 스킬트리 {
                     tmp.offer(route.charAt(i));
                 }
             }
-//            System.out.println("tmp :" + tmp);
             while(true) {
                 if(tmp.isEmpty()) {
                     answer++;
@@ -27,8 +26,6 @@ public class 스킬트리 {
                     break;
                 }
                 if (tmp.peek() == queue.peek()) {
-//                    System.out.println("route :" + route);
-//                    System.out.println(tmp.peek() + " " + queue.peek());
                     tmp.poll();
                     queue.poll();
                 } else {
