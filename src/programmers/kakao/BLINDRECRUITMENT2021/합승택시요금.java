@@ -18,9 +18,9 @@ public class 합승택시요금 {
             board[fares[i][0]][fares[i][1]] = fares[i][2];
             board[fares[i][1]][fares[i][0]] = fares[i][2];
         }
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
+        for (int k = 1; k <= n; k++) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= n; j++) {
                     board[i][j] = Math.min(board[i][k] + board[k][j], board[i][j]);
                 }
             }
