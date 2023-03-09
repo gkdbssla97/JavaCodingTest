@@ -1,4 +1,4 @@
-package programmers.kakao;
+package programmers.kakao.BLINDRECRUITMENT2022;
 
 import java.util.*;
 
