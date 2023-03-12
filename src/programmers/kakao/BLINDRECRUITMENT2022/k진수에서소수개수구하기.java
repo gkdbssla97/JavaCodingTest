@@ -41,14 +41,12 @@ public class k진수에서소수개수구하기 {
         //153을 2진법으로
         ArrayList<String> list = new ArrayList<>();
         while (n != 0) {
-
             list.add(String.valueOf(n % k));
             n /= k;
         }
         Collections.reverse(list);
         System.out.println(list);
         return list;
-
     }
 
     public static void main(String[] args) {
