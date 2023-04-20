@@ -7,68 +7,61 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BOJ2178 {
-    static int w, h;
+    static int N, M;
     static int[][] board;
-    static int[][] visited;
-    static Queue<Point> q;
-
+    static boolean[][] visited;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
 
-    static class Point {
-        int x;
-        int y;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] split = br.readLine().split(" ");
+        N = Integer.parseInt(split[0]);
+        M = Integer.parseInt(split[1]);
 
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
+        board = new int[N][M];
+        visited = new boolean[N][M];
+
+        for (int i = 0; i < N; i++) {
+            String[] s = br.readLine().split("");
+            for (int j = 0; j < s.length; j++) {
+                board[i][j] = Integer.parseInt(s[j]);
+            }
         }
+        bfs(0, 0);
+//        for (int i = 0; i < N; i++) {
+//            System.out.println(Arrays.toString(board[i]));
+//        }
+        System.out.println(board[N - 1][M - 1]);
     }
-
     static void bfs(int x, int y) {
-        q = new LinkedList<>();
+        visited[x][y] = true;
+        Queue<Point> q = new LinkedList<>();
         q.offer(new Point(x, y));
 
-        while (!q.isEmpty()) {
-            Point pos = q.poll();
+        while(!q.isEmpty()) {
+            Point poll = q.poll();
+            visited[poll.x][poll.y] = true;
 
             for (int i = 0; i < 4; i++) {
-                int nx = dx[i] + pos.x;
-                int ny = dy[i] + pos.y;
-                if (0 <= nx && nx < h && 0 <= ny && ny < w) {
-                    if (visited[nx][ny] == 0 && board[nx][ny] == 1) {
-                        visited[nx][ny] = 1;
-                        board[nx][ny] = board[pos.x][pos.y] + 1;
-                        q.offer(new Point(nx, ny));
-                    }
+                int nx = dx[i] + poll.x;
+                int ny = dy[i] + poll.y;
+                if(0 <= nx && nx < N && 0<= ny && ny < M
+                    && !visited[nx][ny] && board[nx][ny] == 1) {
+                    visited[nx][ny] = true;
+                    board[nx][ny] = board[poll.x][poll.y] + 1;
+                    q.offer(new Point(nx, ny));
                 }
             }
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    static class Point{
+        int x, y;
 
-        h = Integer.parseInt(st.nextToken());
-        w = Integer.parseInt(st.nextToken());
-
-        board = new int[h][w];
-        visited = new int[h][w];
-
-        for (int i = 0; i < h; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < s.length(); j++) {
-                board[i][j] = s.charAt(j) - '0';
-            }
+        Point(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-            bfs(0, 0);
-        System.out.println(board[h - 1][w - 1]);
-//        for (int i = 0; i < h; i++) {
-//            for (int j = 0; j < w; j++) {
-//                System.out.print(board[i][j]);
-//            }
-//            System.out.println();
-//        }
     }
 }
