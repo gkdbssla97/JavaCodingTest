@@ -25,7 +25,7 @@ public class BOJ1261 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
+        ;
         N = Integer.parseInt(st.nextToken()); // 가로
         M = Integer.parseInt(st.nextToken()); // 세로
 
