@@ -48,12 +48,12 @@ public class BOJ16234 {
                 board[i][j] = Integer.parseInt(s[j]);
             }
         }
-        while(true) {
+        while (true) {
             boolean isMove = false;
             visited = new boolean[N][N];
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    if(!visited[i][j]) {
+                    if (!visited[i][j]) {
                         int sum = bfs(board, i, j);
                         if (list.size() > 1) {
                             changePopulation(sum);
@@ -62,7 +62,7 @@ public class BOJ16234 {
                     }
                 }
             }
-            if(!isMove) break;
+            if (!isMove) break;
             cnt++;
         }
         System.out.println(cnt);
@@ -70,12 +70,12 @@ public class BOJ16234 {
 
     static void changePopulation(int sum) {
         int avg = sum / list.size();
-        for(Point n : list) {
+        for (Point n : list) {
             board[n.x][n.y] = avg;
         }
     }
 
-    static int bfs(int[][] board,int x , int y) {
+    static int bfs(int[][] board, int x, int y) {
         Queue<Point> q = new LinkedList<>();
         list = new ArrayList<>();
         q.add(new Point(x, y));
@@ -103,14 +103,6 @@ public class BOJ16234 {
 
             }
         }
-
-//        for(int i = 0; i < N; i++) {
-//            for (int j = 0; j < N; j++) {
-//                System.out.print(board[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-        System.out.println();
         return sum;
     }
 }
