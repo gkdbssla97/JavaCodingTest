@@ -4,6 +4,11 @@ import java.util.*;
 import java.io.*;
 
 class 크레인인형뽑기게임 {
+    public static void main(String[] args) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(null);
+        System.out.println(arr.get(0));
+    }
     static Stack<Integer> stack;
     static int total = 0;
 
