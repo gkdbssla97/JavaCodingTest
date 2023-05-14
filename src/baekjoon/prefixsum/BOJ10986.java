@@ -7,39 +7,38 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ10986 {
-    static long[] A;
-    static long[] mod;
+    static int N, M;
+    static int[] arr;
+    static long[] prefix;
+    static long[] cnt;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        String[] s = br.readLine().split(" ");
+        N = Integer.parseInt(s[0]);
+        M = Integer.parseInt(s[1]);
 
-        A = new long[N + 1];
-        mod = new long[M + 1];
-
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            A[i] = Integer.parseInt(st.nextToken());
+        arr = new int[N];
+        prefix = new long[N + 1];
+        cnt = new long[M];
+        String[] ss = br.readLine().split(" ");
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(ss[i]);
         }
 
-        long cnt = 0;
-        //누적합
-        for (int i = 1; i <= N; i++) {
-            A[i] += A[i-1];
+        for (int i = 0; i < N; i++) {
+            prefix[i + 1] = prefix[i] + arr[i];
+            long i1 = prefix[i + 1] % M;
+            cnt[(int) i1]++;
         }
-        for (int i = 1; i <= N; i++) {
-            A[i] %= M;
-            if(A[i] == 0) cnt++;
-            ++mod[(int)A[i]];
+        long result = 0;
+        for(int i = 0; i < M; i++) {
+            result += (cnt[i] * (cnt[i] - 1)) / 2;
         }
-        for (int i = 0; i < mod.length; i++) {
-            if (mod[i] > 1) {
-                cnt += (mod[i] * (mod[i] - 1)) / 2;
-            }
-        }
-        System.out.println(cnt);
+        result += cnt[0];
+//        System.out.println(Arrays.toString(prefix));
+//        System.out.println(Arrays.toString(cnt));
+        System.out.println(result);
     }
 }
