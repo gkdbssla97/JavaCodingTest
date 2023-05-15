@@ -9,25 +9,29 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 public class BOJ11441 {
+    static int N, M;
+    static int[] arr;
+    static int[] prefix_sum;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        StringTokenizer  st = new StringTokenizer(br.readLine());
-        int []s = new int[N + 1];
-        int M = Integer.parseInt(br.readLine());
-        for (int i = 1; i < s.length; i++) {
-            s[i] = s[i - 1] + Integer.parseInt(st.nextToken());
-        }
-//        for(int i = 0; i < s.length; i++)
-//            System.out.print(s[i] + " ");
-//        System.out.println();
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            System.out.println(s[b] - s[a - 1]);
+        N = Integer.parseInt(br.readLine());
+        String[] s = br.readLine().split(" ");
+        arr = new int[N];
+        prefix_sum = new int[N + 1];
+        for(int i = 0; i < s.length; i++) {
+            arr[i] = Integer.parseInt(s[i]);
         }
 
+        M = Integer.parseInt(br.readLine());
+        for(int i = 0; i < N; i++) {
+            prefix_sum[i + 1] = prefix_sum[i] + arr[i];
+        }
+//        System.out.println(Arrays.toString(prefix_sum));
+        for(int i = 0; i < M; i++) {
+            String[] ss = br.readLine().split(" ");
+            int a = Integer.parseInt(ss[0]);
+            int b = Integer.parseInt(ss[1]);
+            System.out.println(prefix_sum[b] - prefix_sum[a - 1]);
+        }
     }
 }
