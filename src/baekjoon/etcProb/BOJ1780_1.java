@@ -3,8 +3,7 @@ package baekjoon.etcProb;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class BOJ1780_1 {
     static int N;
@@ -17,13 +16,15 @@ public class BOJ1780_1 {
         N = Integer.parseInt(br.readLine());
         board = new int[N][N];
         visited = new boolean[N][N];
-
         for (int i = 0; i < N; i++) {
             String[] s = br.readLine().split(" ");
             for (int j = 0; j < s.length; j++) {
                 board[i][j] = Integer.parseInt(s[j]);
             }
         }
+        List<Integer> arr = Arrays.asList(1, 2, 3, 4);
+        arr.remove(0);
+        System.out.println(arr.toString());
 
         partition(0, 0, N);
         System.out.println(MINUS);
