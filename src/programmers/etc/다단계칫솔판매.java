@@ -39,6 +39,8 @@ public class 다단계칫솔판매 {
             System.out.println(map.getKey() + " " + map.getValue());
             answer.add(map.getValue());
         }
+        for(Map.Entry<String, Integer> map : money.entrySet()) {
+        }
         return answer;
     }
 
