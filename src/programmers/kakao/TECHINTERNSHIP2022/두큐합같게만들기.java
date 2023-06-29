@@ -1,70 +1,49 @@
 package programmers.kakao.TECHINTERNSHIP2022;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-public class 두큐합같게만들기 {
-    public static long solution(int[] queue1, int[] queue2) {
-        int answer = 0;
-        long q1_sum = Arrays.stream(queue1).sum();
-        long q2_sum = Arrays.stream(queue2).sum();
-        long total_sum = q1_sum + q2_sum;
-
-        Queue<Integer> q1 = intArrToQueue(queue1);
-        Queue<Integer> q2 = intArrToQueue(queue2);
-
-        if(total_sum % 2 != 0) return -1;
-        total_sum /= 2;
-
-        while (q1_sum != total_sum) {
-            if (q1_sum < total_sum) {
-                int poll = q2.poll();
-                q1.offer(poll);
-                q1_sum += poll;
+    class 두큐합같게만들기 {
+        static long res = -1;
+        public long solution(int[] queue1, int[] queue2) {
+            long ans1 = 0;
+            long ans2 = 0;
+            Queue<Integer> q1 = new LinkedList<>();
+            Queue<Integer> q2 = new LinkedList<>();
+            for(int q : queue1) {
+                ans1 += q;
+                q1.offer(q);
+            }
+            for(int q : queue2) {
+                ans2 += q;
+                q2.offer(q);
+            }
+            // ans1 == ans2
+            if(ans1 == ans2) {
+                return 0;
             } else {
-                int poll = q1.poll();
-                q2.offer(poll);
-                q1_sum -= poll;
+                long idx = 0;
+                while(idx <= 600_000) {
+                    if(ans1 > ans2) {
+                        int n = q1.poll();
+                        q2.offer(n);
+                        ans1 -= n;
+                        ans2 += n;
+                    } else if(ans1 < ans2) {
+                        int n = q2.poll();
+                        q1.offer(n);
+                        ans2 -= n;
+                        ans1 += n;
+                    } else {
+                        res = idx;
+                        break;
+                    }
+                    idx++;
+                }
             }
-            answer++;
+            // ans1 > ans2
+            // ans2 > ans1
 
-            if(answer > (queue1.length * 4)) {
-                return -1;
-            }
+            System.out.println(res);
+            return (res >= 600000)? -1 : res;
         }
-        System.out.println(answer);
-        return answer;
     }
-
-    private static Queue<Integer> intArrToQueue(int[] queue1) {
-        Queue<Integer> q = new LinkedList<>();
-        for (int i : queue1) {
-            q.offer(i);
-        }
-        return q;
-    }
-
-    private static long sumQueue(Queue<Integer> q) {
-        long total = 0;
-        for (Integer i : q) {
-            total += i;
-        }
-        return total;
-    }
-
-    public static void main(String[] args) {
-        int[] queue1 = {3, 2, 7, 2};
-        int[] queue2 = {4, 6, 5, 1};
-
-//        int[] queue1 = {1, 2, 1, 2};
-//        int[] queue2 = {1, 10, 1, 2};
-
-//        int[] queue1 = {1, 1};
-//        int[] queue2 = {1, 5};
-
-        solution(queue1, queue2);
-    }
-
-
-}
