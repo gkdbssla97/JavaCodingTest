@@ -1,93 +1,98 @@
 package programmers.kakao.BLINDRECRUITMENT2023;
 
-import java.util.Stack;
+import java.util.*;
 
-public class 택배배달과수거하기 {
-    static Stack<Logis> delivery;
-    static Stack<Logis> pickup;
+//230629 16:24
+class 택배배달과수거하기 {
+    static Stack<Village> del = new Stack<>();
+    static Stack<Village> pick = new Stack<>();
     static long res = 0;
-
     public long solution(int cap, int n, int[] deliveries, int[] pickups) {
+        long answer = -1;
 
-        delivery = new Stack<>();
-        pickup = new Stack<>();
-
-        long index = 1;
-        // 배달
-        for (int d : deliveries) {
-            if (d != 0) {
-                delivery.push(new Logis(index, d));
+        for(int i = 0; i < deliveries.length; i++) {
+            long d = deliveries[i];
+            long p = pickups[i];
+            if(d != 0) {
+                del.push(new Village(d, i + 1));
             }
-            index++;
-        }
-        index = 1;
-        // 수거
-        for (int p : pickups) {
-            if (p != 0) {
-                pickup.push(new Logis(index, p));
+            if(p != 0) {
+                pick.push(new Village(p, i + 1));
             }
-            index++;
         }
-
-        while (!delivery.isEmpty() || !pickup.isEmpty()) {
-            long c = 0;
+        // print(del);
+        // print(pick);
+        // 스택이 둘다 빌 때 까지
+        while(!del.isEmpty() || !pick.isEmpty()) {
+            // 배달
             long tmp_d = 0;
             long tmp_p = 0;
-            while (!delivery.isEmpty()) {
-                // 1. 배달
-                Logis d = delivery.pop();
-
-                if (tmp_d == 0) {
-                    tmp_d = d.home;
+            boolean flag = false;
+            long d_cap = 0;
+            while(!del.isEmpty()) {
+                Village cur = del.peek();
+                if(cap >= d_cap + cur.things) {
+                    d_cap += cur.things;
+                    Village _cur = del.pop();
+                    if(tmp_d == 0) {
+                        tmp_d = _cur.v_num;
+                    }
+                } else {
+                    flag = true;
+                    Village p = del.pop();
+                    del.push(new Village(p.things - (cap - d_cap), p.v_num));
+                    if(tmp_d == 0) {
+                        tmp_d = p.v_num;
+                    }
                 }
-
-                if (cap < c + d.val) {
-                    // System.out.println("-> " + d.val);
-                    delivery.push(new Logis(d.home, c + d.val - cap));
-                    c = cap;
-                    break;
-                }
-                c += d.val;
-
-                // 2. 수거
-                if (c == cap) {
-                    break;
-                }
-            }
-            // System.out.println(delivery.peek().home + " " + delivery.peek().val);
-
-            // System.out.println(tmp);
-            long _c = 0;
-            while (!pickup.isEmpty()) {
-                Logis p = pickup.pop();
-
-                if (tmp_p == 0) {
-                    tmp_p = p.home;
-                }
-
-                if (_c + p.val > cap) {
-                    pickup.push(new Logis(p.home, _c + p.val - cap));
-                    break;
-                }
-                _c += p.val;
-                if (cap == _c) {
+                // System.out.println(1);
+                if(flag) {
                     break;
                 }
             }
-            // System.out.println(pickup.peek().home + " " + pickup.peek().val);
-            res += (2 * Math.max(tmp_d, tmp_p));
+            // 수거
+            flag = false;
+            long p_cap = 0;
+            while(!pick.isEmpty()) {
+                Village cur = pick.peek();
+                if(cap >= p_cap + cur.things) {
+                    p_cap += cur.things;
+                    Village _cur = pick.pop();
+                    if(tmp_p == 0) {
+                        tmp_p = _cur.v_num;
+                    }
+                } else {
+                    flag = true;
+                    Village p = pick.pop();
+                    pick.push(new Village(p.things - (cap - p_cap), p.v_num));
+                    if(tmp_p == 0) {
+                        tmp_p = p.v_num;
+                    }
+                }
+
+                if(flag) {
+                    break;
+                }
+            }
+            // System.out.println(tmp_d + " " + tmp_p);
+            res += Math.max(tmp_d, tmp_p);
         }
-
-        long answer = -1;
-        return res;
+        return res * 2;
     }
 
-    static class Logis {
-        long home, val;
+    static class Village {
+        long things, v_num;
 
-        Logis(long home, long val) {
-            this.home = home;
-            this.val = val;
+        Village(long things, long v_num) {
+            this.things = things;
+            this.v_num = v_num;
+        }
+    }
+
+    static void print(Stack<Village> s) {
+        while(!s.isEmpty()) {
+            Village z = s.pop();
+            System.out.print(z.things + " " + z.v_num);
         }
     }
 }
