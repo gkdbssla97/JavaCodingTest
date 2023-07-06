@@ -6,45 +6,24 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class BOJ1463 {
-    static boolean[] visited = new boolean[1000000];
-    static int total = Integer.MAX_VALUE;
+    static int[] dp = new int[1000001];
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int X = Integer.parseInt(br.readLine());
-        dfs(X, 0);
-        System.out.println(total);
-    }
+        int N = Integer.parseInt(br.readLine());
 
-    static void dfs(int X, int cnt) {
-
-        if (X == 1) {
-            if (cnt < total) {
-                total = cnt;
-                return;
+        dp[1] = 0;
+        dp[2] = 1;
+        dp[3] = 1;
+        dp[4] = 2;
+        for (int i = 2; i <= 1000000; i++) {
+            dp[i] = dp[i - 1] + 1;
+            if(i % 2 == 0) {
+                dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+            } else if(i % 3 == 0) {
+                dp[i] = Math.min(dp[i], dp[i / 3] + 1);
             }
-        } else {
-            if (cnt >= total) {
-                return;
-            }
-//            System.out.println("!");
-            if (X % 3 == 0 && !visited[X / 3]) {
-                visited[X / 3] = true;
-//                System.out.println(X / 3);
-                dfs(X / 3, cnt + 1);
-                visited[X / 3] = false;
-            } if (X % 2 == 0 && !visited[X / 2]) {
-                visited[X / 2] = true;
-//                System.out.println(X / 2);
-                dfs(X / 2, cnt + 1);
-                visited[X / 2] = false;
-            } if (!visited[X - 1]) {
-                    visited[X - 1] = true;
-//                    System.out.println(X - 1);
-                    dfs(X - 1, cnt + 1);
-                    visited[X - 1] = false;
-                }
-            }
-//            System.out.println(total);
         }
+        System.out.println(dp[N]);
+    }
 }
