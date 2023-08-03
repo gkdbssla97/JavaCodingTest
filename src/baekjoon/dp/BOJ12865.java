@@ -17,7 +17,7 @@ public class BOJ12865 {
             String[] ss = br.readLine().split(" ");
             w[i] = Integer.parseInt(ss[0]);
             v[i] = Integer.parseInt(ss[1]);
-            dp[w[i]] = Math.max(dp[w[i]], v[i]);
+//            dp[w[i]] = Math.max(dp[w[i]], v[i]);
         }
         for (int i = 1; i <= n; i++) {
             for(int j = k; j - w[i] >= 0; j--) {
