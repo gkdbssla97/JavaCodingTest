@@ -17,18 +17,18 @@ public class BOJ12865 {
             String[] ss = br.readLine().split(" ");
             w[i] = Integer.parseInt(ss[0]);
             v[i] = Integer.parseInt(ss[1]);
-//            dp[w[i]] = Math.max(dp[w[i]], v[i]);
         }
-        for (int i = 1; i <= n; i++) {
-            for(int j = k; j - w[i] >= 0; j--) {
-//                if(j + w[i] <= k) {
+        for(int i = 1; i <= n; i++) {
+            for(int j = k; j >= 0; j--) {
+                if(j - w[i] >= 0) {
                     dp[j] = Math.max(dp[j], dp[j - w[i]] + v[i]);
-//                }
-//                if(i == 1 && j == 2) System.out.println(v[i] + " " + dp[j]);
+                }
             }
         }
-//        System.out.println(Arrays.toString(dp));
-        int asInt = Arrays.stream(dp).max().getAsInt();
-        System.out.println(asInt);
+        int res = Integer.MIN_VALUE;
+        for(int i = 0; i <= k; i++) {
+            res = Math.max(res, dp[i]);
+        }
+        System.out.println(res);
     }
 }
