@@ -3,47 +3,49 @@ package baekjoon.graph;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ2606 {
-    static int node, vertex;
-    static int[][] board;
+    static int node;
+    static int vertex;
+    static ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     static boolean[] visited;
-    static int cnt = 0;
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        node = Integer.parseInt(st.nextToken());
+        node = Integer.parseInt(br.readLine());
         vertex = Integer.parseInt(br.readLine());
-        board = new int[node + 1][node + 1];
         visited = new boolean[node + 1];
+
+        for (int i = 0; i <= node; i++) {
+            arr.add(new ArrayList<>());
+        }
 
         for (int i = 0; i < vertex; i++) {
             String[] s = br.readLine().split(" ");
             int a = Integer.parseInt(s[0]);
             int b = Integer.parseInt(s[1]);
-
-            board[a][b] = 1;
-            board[b][a] = 1;
+            arr.get(a).add(b);
+            arr.get(b).add(a);
         }
-
+        visited[1] = true;
         dfs(1);
-        System.out.println(cnt);
+        int cnt = 0;
+        for(boolean b : visited) {
+            if(b) cnt++;
+        }
+        System.out.println(Arrays.toString(visited));
+        System.out.println(cnt - 1);
     }
-
     static void dfs(int start) {
-        visited[start] = true;
 
-        for (int i = 1; i <= node; i++) {
-            if (!visited[i] && board[start][i] == 1) {
-                visited[i] = true;
-                cnt++;
-//                System.out.println("start: i: " + start + " " + i);
-                dfs(i);
-//                visited[i] = false;
-                //return;
+        for(int i = 0; i < arr.get(start).size(); i++) {
+            int next = arr.get(start).get(i);
+            if(!visited[next]){
+                System.out.println("node ->" + next);
+                visited[next] = true;
+                dfs(next);
             }
         }
     }
