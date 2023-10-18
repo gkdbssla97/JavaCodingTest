@@ -20,13 +20,14 @@ public class BOJ21921 {
             prefix[i + 1] = prefix[i] + board[i];
         }
         int res = 0;
-        for(int i = x; i <= n; i++) {
-            int v = prefix[i] - prefix[i - x];
-            res = Math.max(res, v);
-        }
         int cnt = 0;
         for(int i = x; i <= n; i++) {
-            if(res == prefix[i] - prefix[i - x]) cnt++;
+            int v = prefix[i] - prefix[i - x];
+            if(res == v) cnt++;
+            if(res < v) {
+                res = v;
+                cnt = 1;
+            }
 
         }
         if(res == 0) System.out.println("SAD");
