@@ -29,6 +29,7 @@ public class BOJ9019 {
 
         Queue<Integer> q = new LinkedList<>();
         q.offer(start);
+        visited[start] = true;
         while (!q.isEmpty()) {
             int now = q.poll();
             int D = (2 * now) % 10000;
