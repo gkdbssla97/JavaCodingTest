@@ -47,7 +47,6 @@ public class BOJ2580 {
                 }
             }
         }
-
     }
 
     static boolean check(int val, int x, int y) {
@@ -71,113 +70,16 @@ public class BOJ2580 {
             } else return false;
         }
         // 영역 전개
-        // 1구간
+        int nx = x / 3 * 3;
+        int ny = y / 3 * 3;
         visited = new boolean[10];
-        if (x < 3 && y < 3) {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 2구간
-        else if (x < 3 && y < 6) {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 3; j < 6; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 3구간
-        else if (x < 3 && y < 9) {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 6; j < 9; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 4구간
-        else if (3 <= x && x < 6 && y < 3) {
-            for (int i = 3; i < 6; i++) {
-                for (int j = 0; j < 3; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 5구간
-        else if (3 <= x && x < 6 && y < 6) {
-            for (int i = 3; i < 6; i++) {
-                for (int j = 3; j < 6; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 6구간
-        else if (3 <= x && x < 6 && y < 9) {
-            for (int i = 3; i < 6; i++) {
-                for (int j = 6; j < 9; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 7구간
-        else if (6 <= x && x < 9 && y < 3) {
-            for (int i = 6; i < 9; i++) {
-                for (int j = 0; j < 3; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 8구간
-        else if (6 <= x && x < 9 && y < 6) {
-            for (int i = 6; i < 9; i++) {
-                for (int j = 3; j < 6; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
-            }
-        }
-        // 9구간
-        else if (6 <= x && x < 9 && y < 9) {
-            for (int i = 6; i < 9; i++) {
-                for (int j = 6; j < 9; j++) {
-                    int v = board[i][j];
-                    if (v == 0) continue;
-                    if (!visited[v]) {
-                        visited[v] = true;
-                    } else return false;
-                }
+        for (int i = nx; i < nx + 3; i++) {
+            for (int j = ny; j < ny + 3; j++) {
+                int v = board[i][j];
+                if (v == 0) continue;
+                if (!visited[v]) {
+                    visited[v] = true;
+                } else return false;
             }
         }
         return true;
