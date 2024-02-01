@@ -3,44 +3,55 @@ package baekjoon.bruteforce;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Map;
 
 public class BOJ9663 {
-    static int[] selected;
-    static int[] visited;
-    static int n;
-    static int cnt = 0;
+    static int n, cnt = 0;
+    static int[][] board;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-
-        visited = new int[n];
-        dfs(0);
-//        System.out.println(Arrays.toString(visited));
+        board = new int[n][n];
+        dfs(0, n);
         System.out.println(cnt);
     }
 
-    static void dfs(int depth) {
-        if (depth == n) {
+    static void dfs(int col, int n) {
+        if (col == n) {
             cnt++;
             return;
         }
-        for(int j = 0; j < n; j++) {
-            visited[depth] = j;
-            if(isPossible(depth))
-                dfs(depth + 1);
+
+        for (int i = 0; i < n; i++) {
+            // 가로
+            if (isPossibleRow(i, col)) {
+                // 사선
+                if (isPossibleDiagonal(i, col)) {
+                    board[i][col] = 1;
+                    dfs(col + 1, n);
+                    board[i][col] = 0;
+                }
+
+            }
         }
     }
-    static boolean isPossible(int depth) {
-        for(int i = 0; i < depth; i++) {
-            if(visited[depth] == visited[i]) {
-                return false;
-            }
-            else if(Math.abs(depth - i) == Math.abs(visited[depth] - visited[i])) {
-                return false;
+
+    static boolean isPossibleRow(int x, int col) {
+        for (int i = 0; i < col; i++) {
+            if (board[x][i] != 0) return false;
+        }
+        return true;
+    }
+
+    static boolean isPossibleDiagonal(int x, int y) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < y; j++) {
+                if (board[i][j] != 0 && Math.abs(i - x) == Math.abs(j - y)) {
+                    return false;
+                }
             }
         }
-
         return true;
     }
 }
