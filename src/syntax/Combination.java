@@ -1,32 +1,32 @@
 package syntax;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Combination {
     static boolean[] visited;
-    static int[] arr;
-    public static void main(String[] args) {
-        int n = 4;
-        arr = new int[n];
-        visited = new boolean[n];
-        arr[0] = 1;
-        arr[1] = 2;
-        arr[2] = 3;
-        arr[3] = 4;
+    static int[] arr = {1, 2, 3, 4, 5};
+    static int[] selected;
 
-        combination(0, 4, 2);
+    public static void main(String[] args) {
+
+        int n = 5;
+
+        selected = new int[3];
+        visited = new boolean[n];
+
+        combination(0, 0, 5, 3);
+
     }
-    static void combination(int start, int n, int r) {
-        if(r == 0) {
-            for (int i = 0; i < n; i++) {
-                if(visited[i]) {
-                    System.out.print(arr[i] + " ");
-                }
-            }
-            System.out.println();
+
+    static void combination(int start, int cnt, int n, int r) {
+        if (cnt == r) {
+            System.out.println(Arrays.toString(selected));
+            return;
         }
         for (int i = start; i < n; i++) {
-            visited[i] = true;
-            combination(i + 1, n, r - 1);
-            visited[i] = false;
+            selected[cnt] = arr[i];
+            combination(i + 1, cnt + 1, n, r);
         }
     }
 }
