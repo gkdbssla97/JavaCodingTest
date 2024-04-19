@@ -1,77 +1,78 @@
 package baekjoon.dijkstra;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.io.*;
+import java.util.*;
 
 public class BOJ1238_1 {
     static int N, M, X;
-    static ArrayList<Integer> res = new ArrayList<>();
-    static int[] home;
     static ArrayList<ArrayList<Node>> arr = new ArrayList<>();
+    static int[] goDist;
+    static int[] arriveDist;
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] s = br.readLine().split(" ");
-
         N = Integer.parseInt(s[0]);
         M = Integer.parseInt(s[1]);
         X = Integer.parseInt(s[2]);
-        home = new int[N + 1];
-        for(int i = 0 ; i < N + 1; i++) {
-            arr.add(new ArrayList<Node>());
+
+        for (int i = 0; i <= N; i++) {
+            arr.add(new ArrayList<>());
+        }
+        goDist = new int[N + 1];
+        Arrays.fill(goDist, Integer.MAX_VALUE);
+        arriveDist = new int[N + 1];
+        Arrays.fill(arriveDist, Integer.MAX_VALUE);
+
+        for (int i = 0; i < M; i++) {
+            s = br.readLine().split(" ");
+            int start = Integer.parseInt(s[0]);
+            int e = Integer.parseInt(s[1]);
+            int c = Integer.parseInt(s[2]);
+
+            arr.get(start).add(new Node(e, c));
         }
 
-        for(int i = 0; i < M; i++) {
-            String[] ss = br.readLine().split(" ");
-            int start = Integer.parseInt(ss[0]);
-            int end = Integer.parseInt(ss[1]);
-            int cost = Integer.parseInt(ss[2]);
-            arr.get(start).add(new Node(end, cost));
+        int max = -1;
+        int[] res = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            goDist = new int[N + 1];
+            Arrays.fill(goDist, Integer.MAX_VALUE);
+            goDist[i] = 0;
+            dijkstra(i, goDist);
+            res[i] = goDist[X];
+        }
+        arriveDist = new int[N + 1];
+        Arrays.fill(arriveDist, Integer.MAX_VALUE);
+        arriveDist[X] = 0;
+        dijkstra(X, arriveDist);
+//        System.out.println(Arrays.toString(res));
+        for(int i = 1; i <= N; i++) {
+            int v = res[i] + arriveDist[i];
+            max = Math.max(v, max);
         }
 
-        home = findPath(X);
-
-        for(int i = 1; i<= N; i++) {
-            int[] dis = findPath(i);
-            res.add(dis[X] + home[i]);
-        }
-        Collections.sort(res);
-        System.out.println(res.get(res.size() - 1));
+        System.out.println(max);
     }
-
-    private static int[] findPath(int i) {
-        int[] dis = new int[N + 1];
-        Arrays.fill(dis, Integer.MAX_VALUE);
-
+    static void dijkstra(int start, int[] dist) {
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.cost, o2.cost));
-        pq.offer(new Node(i, 0));
-        dis[i] = 0;
+        pq.offer(new Node(start, 0));
 
         while(!pq.isEmpty()) {
-            Node curNode = pq.poll();
+            Node cur = pq.poll();
+            if(cur.cost > dist[cur.end]) continue;
 
-            if(curNode.cost > dis[curNode.end]) {
-                continue;
-            }
-
-            for(int j = 0; j < arr.get(curNode.end).size(); j++) {
-                Node nextNode = arr.get(curNode.end).get(j);
-                if(nextNode.cost + curNode.cost < dis[nextNode.end]) {
-                    dis[nextNode.end] = nextNode.cost + curNode.cost;
-                    pq.offer(new Node(nextNode.end, dis[nextNode.end]));
+            for(int i = 0; i < arr.get(cur.end).size(); i++) {
+                Node next = arr.get(cur.end).get(i);
+                if(dist[next.end] > dist[cur.end] + next.cost) {
+                    dist[next.end] = dist[cur.end] + next.cost;
+                    pq.offer(new Node(next.end, dist[next.end]));
                 }
             }
         }
-        return dis;
     }
-
     static class Node {
-        int end;
-        int cost;
+        int end, cost;
 
         Node(int end, int cost) {
             this.end = end;

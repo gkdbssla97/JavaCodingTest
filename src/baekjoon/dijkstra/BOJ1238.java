@@ -66,8 +66,8 @@ public class BOJ1238 {
             }
         }
 
-//        System.out.println(Arrays.toString(dist_go_home));
-//        System.out.println("------------");
+        System.out.println(Arrays.toString(dist_go_home));
+        System.out.println("------------");
 
         int max_val = 0;
 //        // go_party
@@ -91,9 +91,9 @@ public class BOJ1238 {
                 }
             }
 //
-//            System.out.println("번호: " + i);
-//            System.out.println(Arrays.toString(dist_go_party));
-//            System.out.println("------------");
+            System.out.println("번호: " + i);
+            System.out.println(Arrays.toString(dist_go_party));
+            System.out.println("------------");
             if (dist_go_party[X] + dist_go_home[i] > max_val) {
                 max_val = dist_go_party[X] + dist_go_home[i];
             }
